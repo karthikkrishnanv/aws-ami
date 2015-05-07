@@ -57,7 +57,7 @@ function printNATAMI() {
   console.log(JSON.stringify(amis, null, 4));
 }
 
-function printAMZNAMI(amiregEx) {
+function printAMZNAMI(amiregEx,tag) {
   var amis = {};
   amis["AMI"] = {};
   var regions = getRegions();
@@ -69,15 +69,15 @@ function printAMZNAMI(amiregEx) {
 
     amis.AMI[_region] = {};
     //pick the first one, sorted by date
-    amis.AMI[_region]["64HVM"] = amiArraySorted[amiArraySorted.length-1].ImageId;
+    amis.AMI[_region][tag] = amiArraySorted[amiArraySorted.length-1].ImageId;
   }
 
   console.log(JSON.stringify(amis, null, 4));
 }
 
-console.log("64-bit Amazon PV AMI:");
-printAMZNAMI(amiAMZN64PV);
 console.log("64-bit NAT HVM AMI:");
 printNATAMI();
+console.log("64-bit Amazon PV AMI:");
+printAMZNAMI(amiAMZN64PV,"64PV");
 console.log("64-bit Amazon HVM AMI:");
-printAMZNAMI(amiAMZN64HVM);
+printAMZNAMI(amiAMZN64HVM,"64HVM");
