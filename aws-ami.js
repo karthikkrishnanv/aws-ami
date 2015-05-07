@@ -1,6 +1,7 @@
 var child_process = require('child_process');
 var amiNATName="amzn-ami-vpc-nat-hvm-*x86_64-gp2"
 var amiAMZN64HVM="amzn-ami-hvm-*x86_64-gp2"
+var amiAMZN64PV="amzn-ami-pv-*x86_64*"
 
 if (!String.prototype.contains) {
     String.prototype.contains = function (arg) {
@@ -56,13 +57,13 @@ function printNATAMI() {
   console.log(JSON.stringify(amis, null, 4));
 }
 
-function printAMZNAMI() {
+function printAMZNAMI(amiregEx) {
   var amis = {};
   amis["AMI"] = {};
   var regions = getRegions();
   for (v in regions.Regions) {
     var _region = (regions.Regions[v].RegionName);
-    var ami = getAMIbyName(amiAMZN64HVM,_region);
+    var ami = getAMIbyName(amiregEx,_region);
     var amiArray = Object.keys(ami.Images).map(function (key) {return ami.Images[key]});
     var amiArraySorted = amiArray.sort(CompareCreationDate);
 
@@ -74,8 +75,9 @@ function printAMZNAMI() {
   console.log(JSON.stringify(amis, null, 4));
 }
 
-
+console.log("64-bit Amazon PV AMI:");
+printAMZNAMI(amiAMZN64PV);
 console.log("64-bit NAT HVM AMI:");
 printNATAMI();
 console.log("64-bit Amazon HVM AMI:");
-printAMZNAMI();
+printAMZNAMI(amiAMZN64HVM);
